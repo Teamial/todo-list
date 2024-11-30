@@ -96,12 +96,15 @@ ul li{
     user-select: none;
     cursor: pointer;
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 ul li::before{
     content: '';
     position: absolute;
-    height: 25px;
-    width: 25px;
+    height: 28px;
+    width: 28px;
     border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -110,7 +113,7 @@ ul li::before{
     background-image: url(images/unchecked.png);
     background-size: cover;
     background-position: center;
-    top: 9px;
+    top: 20px;
     left: 8px;
 }
 ul li.checked{
@@ -122,9 +125,11 @@ ul li.checked::before{
     background-image: url(images/checked.png);
 }
 ul li span{
-    position: absolute;
+    flex-shrink: 0;
+    position: relative;
+    margin-left: 10px;
     right: 0;
-    top: 5px;
+    top: -1px;
     width: 40px;
     height: 40px;
     font-size: 22px;
