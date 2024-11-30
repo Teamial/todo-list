@@ -42,6 +42,7 @@
     border-radius: 30px;
     padding-left: 20px;
     margin-bottom: 25px;
+    padding: 10px 20px;
 }
 input{
     flex: 1;
@@ -49,11 +50,14 @@ input{
     outline: none;
     background: transparent;
     padding: 9px;
-    position: relative;
+    font-size: 13.5px;
+    margin-right: 5px;
 }
 button{
+    flex-shrink: 0;
     border: none;
     outline: none;
+    width: auto;
     padding: 16px 50px;
     background: #023fa2;
     color: #fff;
