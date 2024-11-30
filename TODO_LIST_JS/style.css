@@ -1,15 +1,30 @@
-@font-face {
+/* @font-face {
     font-family: 'Sobiscuit Regular';
     font-style: normal;
     font-weight: normal;
     src: local('Sobiscuit Regular'), url('Sobiscuit-nR6VR.woff') format('woff');
+} */
+
+@font-face {
+    font-family: 'Adelia';
+    font-style: normal;
+    font-weight: normal;
+    src: url('ADELIA.otf');
 }
+@font-face {
+    font-family: 'Potta One';
+    font-style: normal;
+    font-weight: normal;
+    src: url('PottaOne-Regular.woff');
+}
+
 *{
+    font-family: 'Potta One', sans-serif;
     margin: 0;
     padding: 0;
-    font-family: 'Sobiscuit Regular', sans-serif;
     box-sizing: border-box;
 }
+
 .container {
     width: 100%;
     min-height: 100vh;
@@ -25,13 +40,15 @@
     border-radius: 10px;
 }
 .todo-app h2{
+    font-family: 'Adelia', sans-serif;
     color: #002765;
     display: flex;
     align-items: center;
     margin-bottom: 20px;
 }
 .todo-app h2 img{
-    width: 44px;
+    align-self: flex-start;
+    width: 53px;
     margin-left: 10px;
 }
 .row{
@@ -69,6 +86,9 @@ button{
     -ms-border-radius: 30px;
     -o-border-radius: 30px;
 }
+.all-done{
+    text-align: center;
+}
 ul li{
     list-style: none;
     font-size: 16px;
@@ -96,7 +116,7 @@ ul li::before{
 ul li.checked{
     color: #555;
     text-decoration: line-through;
-    text-decoration-thickness: 3.1px;
+    text-decoration-thickness: 2.5px;
 }
 ul li.checked::before{
     background-image: url(images/checked.png);
