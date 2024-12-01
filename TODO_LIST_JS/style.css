@@ -130,15 +130,12 @@ ul li::before{
     top: 20px;
     left: 8px;
 }
-.task{
-    flex: 1;
-}
-li.checked .task{
+ul li.checked{
     color: #555;
     text-decoration: line-through;
     text-decoration-thickness: 2.5px;
 }
-li.checked .close {
+li.checked span {
     text-decoration: none;
 }
 ul li.checked::before{
