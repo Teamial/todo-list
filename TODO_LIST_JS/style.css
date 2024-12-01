@@ -17,27 +17,36 @@
     font-weight: normal;
     src: url('PottaOne-Regular.woff');
 }
-
+/*Global Styles*/
 *{
     font-family: 'Potta One', sans-serif;
+    position: relative;
+    background: transparent;
+    color: #002765;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 .container {
+    position: relative;
     width: 100%;
     min-height: 100vh;
     background: linear-gradient(135deg, white, #0a2b7d);
+    background-size: contain;
     padding: 10px;
+    overflow: hidden;
+    z-index: 1;
 }
 .todo-app{
+    position: relative;
     width: 100%;
     max-width: 560px;
     background: white;
     margin: 100px auto 20px;
     padding: 40px 30px 70px;
     border-radius: 10px;
+    z-index: 2;
 }
 .todo-app h2{
     font-family: 'Adelia', sans-serif;
@@ -60,6 +69,7 @@
     padding-left: 20px;
     margin-bottom: 25px;
     padding: 10px 20px;
+    z-index: 2;
 }
 input{
     flex: 1;
@@ -69,6 +79,7 @@ input{
     padding: 9px;
     font-size: 13.5px;
     margin-right: 5px;
+    z-index: 2;
 }
 button{
     flex-shrink: 0;
@@ -85,20 +96,23 @@ button{
     -moz-border-radius: 30px;
     -ms-border-radius: 30px;
     -o-border-radius: 30px;
+    background: 0.3s;
 }
-.all-done{
-    text-align: center;
+ul {
+    list-style:none;
+    padding: 0;
 }
 ul li{
+    position: relative;
     list-style: none;
     font-size: 16px;
     padding: 12px 8px 12px 50px;
     user-select: none;
     cursor: pointer;
-    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    z-index: 3;
 }
 ul li::before{
     content: '';
@@ -116,10 +130,16 @@ ul li::before{
     top: 20px;
     left: 8px;
 }
-ul li.checked{
+.task{
+    flex: 1;
+}
+li.checked .task{
     color: #555;
     text-decoration: line-through;
     text-decoration-thickness: 2.5px;
+}
+li.checked .close {
+    text-decoration: none;
 }
 ul li.checked::before{
     background-image: url(images/checked.png);

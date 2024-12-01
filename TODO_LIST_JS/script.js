@@ -1,12 +1,14 @@
 const inputBox = document.getElementById("input-box");
 const listContainer = document.getElementById("list-container");
 
+// Add task on Enter key press
 inputBox.addEventListener('keypress', function(event){
     if (event.key === 'Enter'){
         addTask();
     }
 });
 
+// Function to add a new task
 function addTask(){
     if (inputBox.value === ''){
         alert("You must write something!");
@@ -23,6 +25,7 @@ function addTask(){
     saveData();
 }
 
+// Event listener for clicks within the list container
 listContainer.addEventListener("click", function(e) {
     if(e.target.tagName === "LI") {
         e.target.classList.toggle("checked");
@@ -34,9 +37,12 @@ listContainer.addEventListener("click", function(e) {
     }
 }, false);
 
+// Function to save tasks to localStorage
 function saveData(){
     localStorage.setItem("data", listContainer.innerHTML);
 }
+
+// Function to load tasks from localStorage
 function showTask(){
     listContainer.innerHTML = localStorage.getItem("data");
 }

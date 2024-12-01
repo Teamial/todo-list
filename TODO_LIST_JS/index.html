@@ -6,9 +6,11 @@
             Molang To-do List (WIP)
         </title>
         <link rel = "stylesheet" href = "style.css">
+        <link rel = "stylesheet" href = "clouds.css">
     </head>
     <body>
         <div class = 'container'>
+            <div id="clouds"></div> <!-- Cloud background -->
             <div class="todo-app">
                 <h2>To-do List <img src="images/Pin Image.gif"></h2>
                 <div class="row">
@@ -16,9 +18,7 @@
                     <div><button onclick="addTask()">enter</button></div>
                 </div>
                 <ul id="list-container">
-                    <!-- <li class = "checked">Task 1</li>
-                    <li>Task 2</li>
-                    <li>Task 3</li> -->
+                    <!-- list items go here -->
                 </ul>
                 <!-- <div class="all-done">
                     <p>You're All Done! <img src=""></p>
@@ -26,5 +26,6 @@
             </div>
         </div>
         <script src="script.js"></script>
+        <script src="cloudscript.js"></script>
     </body>
 </html>
