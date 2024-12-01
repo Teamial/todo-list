@@ -137,16 +137,16 @@ ul li{
     position: relative;
     list-style: none;
     font-size: 16px;
-    padding: 12px 16px;
+    padding: 12px 8px 12px 50px;
     user-select: none;
+    cursor: default;
+    display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 3;
-    display: flex;
-    cursor: default;
 }
-ul li .checkmark{
-    display: inline-block;
+ul li::before{
+    content: '';
     position: absolute;
     height: 24px;
     width: 24px;
@@ -158,24 +158,21 @@ ul li .checkmark{
     background-image: url(images/unchecked.png);
     background-size: cover;
     background-position: center;
-    margin-right: 10px;
-    flex-shrink: 0;
     top: 50%;
     left: 12px;
-    transform: translateY(-50%);
-    transition: background-image 0.3s ease;
-    cursor: pointer;
-    -webkit-transition: background-image 0.3s ease;
-    -moz-transition: background-image 0.3s ease;
-    -ms-transition: background-image 0.3s ease;
-    -o-transition: background-image 0.3s ease;
+    transform: translateY(-50%); /* Centers vertically relative to the li */
+    cursor: pointer; /* Changes cursor to indicate it's clickable */
 }
-ul li.checked .checkmark{
+ul li.checked{
     color: #555;
     text-decoration: line-through;
     text-decoration-thickness: 2.5px;
 }
 
-ul li.checked .checkmark{
+ul li.checked::before{
     background-image: url(images/checked.png);
+}
+
+ul li span:hover{
+    background: #edeef0;
 }
