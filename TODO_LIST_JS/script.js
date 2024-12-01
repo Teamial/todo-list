@@ -40,6 +40,7 @@ function loadTasks(){
         return [];
     }
 }
+
 // Function to save tasks to localStorage
 function saveTasks(tasks){
     try {
@@ -50,62 +51,78 @@ function saveTasks(tasks){
     }
 }
 
+// Function to toggle the checked state
+function toggleCheck(index) {
+    const tasks = loadTasks();
+    tasks[index].completed = !tasks[index].completed;
+    saveTasks(tasks);
+    renderTasks();
+}
+
+// Function to delete a task
+function deleteTask(index) {
+    const tasks = loadTasks();
+    swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this task!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            tasks.splice(index, 1); // Remove the task
+            saveTasks(tasks); // Save updated tasks
+            renderTasks(); // Rerender the tasks
+            swal("Poof! Your task has been deleted!", {
+                icon: "success",
+            });
+        } else {
+            swal("Your task is safe!");
+        }
+    });
+}
+
+// Function to render tasks
 function renderTasks() {
     listContainer.innerHTML = ""; // Clear the current list
     const tasks = loadTasks();
 
     tasks.forEach((task, index) => {
         const li = document.createElement("li");
-        li.textContent = task.text;
-
         if (task.completed) {
             li.classList.add("checked");
         }
 
-        // Add delete button
+        // Create the checkmark span
+        const checkmark = document.createElement("span");
+        checkmark.classList.add("checkmark");
+        checkmark.addEventListener("click", function(e) {
+            e.stopPropagation(); // Prevent the click from bubbling up to the li
+            toggleCheck(index);
+        });
+
+        // Create the task text span
+        const taskText = document.createElement("span");
+        taskText.classList.add("task-text");
+        taskText.textContent = task.text;
+
+        // Create the delete button
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "\u00d7"; // Unicode for ×
         deleteBtn.classList.add("delete-button");
         deleteBtn.dataset.index = index; // Properly set data-index
+        deleteBtn.addEventListener("click", function(e) {
+            e.stopPropagation(); // Prevent the click from bubbling up to the li
+            deleteTask(index);
+        });
 
+        // Append elements to the li
+        li.appendChild(checkmark);
+        li.appendChild(taskText);
         li.appendChild(deleteBtn);
+
+        // Append the li to the list container
         listContainer.appendChild(li);
     });
 }
-
-// Event listener for clicks within the list container
-listContainer.addEventListener("click", function(e) {
-    const tasks = loadTasks();
-
-    if (e.target.tagName === "LI") {
-        const index = Array.from(listContainer.children).indexOf(e.target);
-        tasks[index].completed = !tasks[index].completed;
-        saveTasks(tasks);
-        renderTasks();
-        e.target.classList.toggle("checked");
-
-    } else if (e.target.tagName === "BUTTON" && e.target.classList.contains("delete-button")) {
-        const index = parseInt(e.target.dataset.index, 10); // Convert to number
-        if (!isNaN(index)) {
-            swal({
-                title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this task!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
-                    tasks.splice(index, 1); // Remove the task
-                    saveTasks(tasks); // Save updated tasks
-                    renderTasks(); // Rerender the tasks
-                    swal("Poof! Your task has been deleted!", {
-                        icon: "success",
-                    });
-                } else {
-                    swal("Your task is safe!");
-                }
-            });
-        }
-    }
-}, false);
