@@ -77,6 +77,8 @@
     color: #002765;
     display: flex;
     align-items: center;
+    justify-content: center;
+    float: center;
     margin-bottom: 20px;
 }
 .todo-app h2 img{
@@ -95,6 +97,12 @@
     padding: 10px 20px;
     z-index: 2;
 }
+/* .good_work{
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+    z-index: 3;
+} */
 input{
     flex: 1;
     border: none;
