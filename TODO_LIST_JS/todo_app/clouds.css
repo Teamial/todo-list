@@ -23,7 +23,7 @@ ul{
 }
 .cloud {
   position: absolute;
-  background: url('images/Pinterest Pin Image from BG Bye.png') no-repeat;
+  background: url('/TODO_LIST_JS/images/Pinterest Pin Image from BG Bye.png') no-repeat;
   background-size: contain;
   width: 300px;
   height: 150px;
