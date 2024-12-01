@@ -135,9 +135,7 @@ ul li.checked{
     text-decoration: line-through;
     text-decoration-thickness: 2.5px;
 }
-li.checked span {
-    text-decoration: none;
-}
+
 ul li.checked::before{
     background-image: url(images/checked.png);
 }
@@ -158,6 +156,7 @@ ul li span{
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
+    pointer-events: none;
 }
 ul li span:hover{
     background: #edeef0;

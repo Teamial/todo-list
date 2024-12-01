@@ -1,5 +1,9 @@
+// Select DOM elements
 const inputBox = document.getElementById("input-box");
 const listContainer = document.getElementById("list-container");
+
+// Load and render tasks on page load
+document.addEventListener("DOMContentLoaded", renderTasks);
 
 // Add task on Enter key press
 inputBox.addEventListener('keydown', function(event){
@@ -8,11 +12,10 @@ inputBox.addEventListener('keydown', function(event){
     }
 });
 
-
 // Function to add a new task
 function addTask(){
     const taskText = inputBox.value.trim();
-    if (taskText.value === ''){
+    if (taskText === ''){
         alert("You must write something!");
     }
     else{
@@ -20,71 +23,89 @@ function addTask(){
             text: taskText,
             completed: false
         };
-        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        const tasks = loadTasks();
         tasks.push(task);
-        localStorage.setItem("tasks", JSON.stringify(tasks));
+        saveTasks(tasks);
         renderTasks();
     }
     inputBox.value = "";
-
 }
 
-function renderTasks(){
-    listContainer.innerHTML = "";
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+// Function to load tasks from localStorage
+function loadTasks(){
+    try {
+        return JSON.parse(localStorage.getItem("tasks")) || [];
+    } catch (e) {
+        console.error("Error loading tasks:", e);
+        return [];
+    }
+}
+// Function to save tasks to localStorage
+function saveTasks(tasks){
+    try {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    } catch (e) {
+        console.error("Error saving tasks:", e);
+        alert("Failed to save tasks.");
+    }
+}
+
+function renderTasks() {
+    listContainer.innerHTML = ""; // Clear the current list
+    const tasks = loadTasks();
+
     tasks.forEach((task, index) => {
-        let li = document.createElement("li");
+        const li = document.createElement("li");
         li.textContent = task.text;
-        if(task.completed){
+
+        if (task.completed) {
             li.classList.add("checked");
         }
 
-        let deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "\u00d7";
-        deleteBtn.setAttribute('data-index', index);
-        deleteBtn.className = "delete-button";
+        // Add delete button
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "\u00d7"; // Unicode for ×
+        deleteBtn.classList.add("delete-button");
+        deleteBtn.dataset.index = index; // Properly set data-index
 
         li.appendChild(deleteBtn);
         listContainer.appendChild(li);
     });
 }
 
-
 // Event listener for clicks within the list container
 listContainer.addEventListener("click", function(e) {
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    if(e.target.tagName === "LI") {
+    const tasks = loadTasks();
+
+    if (e.target.tagName === "LI") {
         const index = Array.from(listContainer.children).indexOf(e.target);
         tasks[index].completed = !tasks[index].completed;
-        localStorage.setItem("tasks", JSON.stringify(tasks));
+        saveTasks(tasks);
+        renderTasks();
         e.target.classList.toggle("checked");
-    }
-    else if (e.target.tagName === "BUTTON"){
-        const index = e.target.getAttribute('data-index');
-        swal({
-            title: "Are you sure?",
-            text: "Once deleted, you will not be able to recover this task!",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((willDelete) => {
-            if (willDelete) {
-                tasks.splice(index, 1);
-                localStorage.setItem("tasks", JSON.stringify(tasks));
-                renderTasks();
-                swal("Poof! Your task has been deleted!", {
-                    icon: "success",
-                });
-            } else {
-                swal("Your task is safe!");
-            }
-        });
+
+    } else if (e.target.tagName === "BUTTON" && e.target.classList.contains("delete-button")) {
+        const index = parseInt(e.target.dataset.index, 10); // Convert to number
+        if (!isNaN(index)) {
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this task!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    tasks.splice(index, 1); // Remove the task
+                    saveTasks(tasks); // Save updated tasks
+                    renderTasks(); // Rerender the tasks
+                    swal("Poof! Your task has been deleted!", {
+                        icon: "success",
+                    });
+                } else {
+                    swal("Your task is safe!");
+                }
+            });
+        }
     }
 }, false);
-
-// Function to load tasks from localStorage
-function showTask(){
-    listContainer.textContent = localStorage.getItem("data");
-}
-showTask();
