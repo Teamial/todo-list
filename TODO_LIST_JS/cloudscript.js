@@ -13,7 +13,7 @@ function createCloud() {
   cloud.style.top = `${topPosition}vh`;
 
   // Randomize animation duration
-  const animationDuration = Math.random() * 15 + 35; // 20s to 50s
+  const animationDuration = Math.random() * 17 + 35; // 20s to 50s
   cloud.style.animationDuration = `${animationDuration}s`;
 
   // Append cloud to container
@@ -26,4 +26,4 @@ function createCloud() {
 }
 
 // Generate new clouds at intervals
-setInterval(createCloud, 3300); // Every 3.3 seconds
+setInterval(createCloud, 3500); // Every 3.5 seconds
