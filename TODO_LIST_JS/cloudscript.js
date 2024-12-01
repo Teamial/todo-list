@@ -13,7 +13,7 @@ function createCloud() {
   cloud.style.top = `${topPosition}vh`;
 
   // Randomize animation duration
-  const animationDuration = Math.random() * 20 + 30; // 20s to 50s
+  const animationDuration = Math.random() * 15 + 3; // 20s to 50s
   cloud.style.animationDuration = `${animationDuration}s`;
 
   // Append cloud to container
