@@ -110,9 +110,6 @@ h2{
     font-size: 1.2em;
     line-height: 57px;
 }
-input[type="checkbox"] {
-    transform: scale(1.2);
-}
 .remember-forgot {
     margin: -15px 0 15px;
     font-size: 0.9em;

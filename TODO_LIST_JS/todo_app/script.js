@@ -1,9 +1,37 @@
+// script.js
+
 // Select DOM elements
 const inputBox = document.getElementById("input-box");
 const listContainer = document.getElementById("list-container");
+const logoutButton = document.getElementById("logout-button");
 
-// Load and render tasks on page load
-document.addEventListener("DOMContentLoaded", renderTasks);
+// Function to get the current logged-in user
+function getCurrentUser() {
+    const user = JSON.parse(localStorage.getItem("loggedInUser")) || JSON.parse(sessionStorage.getItem("loggedInUser"));
+    return user ? user.email : null;
+}
+
+// Function to check authentication
+function checkAuth() {
+    const userEmail = getCurrentUser();
+    if (!userEmail) {
+        // Redirect to login page if not authenticated
+        window.location.href = "/index.html";
+    }
+}
+
+// Logout Function
+logoutButton.addEventListener("click", () => {
+    localStorage.removeItem("loggedInUser");
+    sessionStorage.removeItem("loggedInUser");
+    window.location.href = "/index.html";
+});
+
+// Call authentication check on page load
+document.addEventListener("DOMContentLoaded", () => {
+    checkAuth();
+    renderTasks();
+});
 
 // Add task on Enter key press
 inputBox.addEventListener('keydown', function(event){
@@ -11,6 +39,12 @@ inputBox.addEventListener('keydown', function(event){
         addTask();
     }
 });
+
+// Function to get tasks key based on user
+function getTasksKey() {
+    const userEmail = getCurrentUser();
+    return userEmail ? `tasks_${userEmail}` : "tasks";
+}
 
 // Function to add a new task
 function addTask(){
@@ -34,16 +68,19 @@ function addTask(){
 // Function to load tasks from localStorage
 function loadTasks(){
     try {
-        return JSON.parse(localStorage.getItem("tasks")) || [];
+        const tasksKey = getTasksKey();
+        return JSON.parse(localStorage.getItem(tasksKey)) || [];
     } catch (e) {
         console.error("Error loading tasks:", e);
         return [];
     }
 }
+
 // Function to save tasks to localStorage
 function saveTasks(tasks){
     try {
-        localStorage.setItem("tasks", JSON.stringify(tasks));
+        const tasksKey = getTasksKey();
+        localStorage.setItem(tasksKey, JSON.stringify(tasks));
     } catch (e) {
         console.error("Error saving tasks:", e);
         alert("Failed to save tasks.");
