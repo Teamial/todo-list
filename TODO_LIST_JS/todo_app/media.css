@@ -45,3 +45,13 @@
 *, *::before, *::after {
     box-sizing: border-box;
 }
+.remember-forgot label {
+    display: flex;
+    align-items: center; /* Vertically center the checkbox and text within the label */
+    cursor: pointer; /* Change cursor to pointer for better UX */
+}
+
+.remember-forgot label span {
+    margin-left: 5px; /* Space between checkbox and text */
+    color: white;
+}

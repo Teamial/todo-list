@@ -138,7 +138,7 @@ h2{
     font-size: 0.9em;
     color: white;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 .remember-forgot label input{
     margin-right: 5px;
@@ -146,13 +146,21 @@ h2{
 .remember-forgot a{
     color: white;
     text-decoration: none;
+    margin-left: 5px;
 }
 .remember-forgot a:hover{
     text-decoration: underline;
 }
-.remember-forgot p{
-    margin-right: 5px;
+.remember-forgot label {
+    display: flex;
+    align-items: center; /* Vertically center the checkbox and text within the label */
+    cursor: pointer; /* Change cursor to pointer for better UX */
 }
+.remember-forgot label span {
+    margin-left: 5px; /* Space between checkbox and text */
+    color: white;
+}
+
 button{
     width: 100%;
     height: 40px;
