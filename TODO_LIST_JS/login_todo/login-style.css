@@ -42,7 +42,7 @@ section{
     z-index: -1;
 }
 
-.login-page{
+.login-page, .register-page{
     position: relative;
     width: 400px;
     height: 450px;
@@ -64,6 +64,12 @@ section{
     flex-direction: column;
     align-items: center;
 }
+.register-page form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 h2{
     font-family: 'Adelia', sans-serif;
     font-size: 2em;
