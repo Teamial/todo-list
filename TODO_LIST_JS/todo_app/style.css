@@ -9,13 +9,13 @@
     font-family: 'Adelia';
     font-style: normal;
     font-weight: normal;
-    src: url('/TODO_LIST_JS/fonts/ADELIA.otf');
+    src: url('/fonts/ADELIA.otf');
 }
 @font-face {
     font-family: 'Potta One';
     font-style: normal;
     font-weight: normal;
-    src: url('/TODO_LIST_JS/fonts/PottaOne-Regular.woff');
+    src: url('/fonts/PottaOne-Regular.woff');
 }
 /*Global Styles*/
 *{
