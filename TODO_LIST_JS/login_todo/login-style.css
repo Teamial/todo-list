@@ -141,12 +141,12 @@ h2{
     justify-content: flex-start;
 }
 .remember-forgot label input{
-    margin-right: 5px;
+    margin-right: 2px;
 }
 .remember-forgot a{
     color: white;
     text-decoration: none;
-    margin-left: 25px;
+    margin-left: 40px;
 }
 .remember-forgot a:hover{
     text-decoration: underline;
