@@ -42,10 +42,27 @@ section{
     z-index: -1;
 }
 
-.login-page, .register-page{
+.login-page{
     position: relative;
     width: 400px;
     height: 450px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+    z-index: 1;
+}
+.register-page{
+    position: relative;
+    width: 450px;
+    height: 500px;
     background: transparent;
     border: 2px solid rgba(255, 255, 255, 0.5);
     display: flex;
@@ -149,7 +166,7 @@ button{
     -ms-border-radius: 40px;
     -o-border-radius: 40px;
 }
-.register-link{
+.register-link, .login-link{
     font-size: 0.9em;
     color: white;
     text-align: center;
