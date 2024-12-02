@@ -8,7 +8,7 @@
     ],
     "routes": [
       { "src": "/todo", "dest": "/todo_app/todo.html" },
-      { "src": "/login", "dest": "index.html" },
+      { "src": "/login", "dest": "/index.html" },
       { "src": "/(.*)", "dest": "/$1" }
     ]
   }
