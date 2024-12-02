@@ -163,7 +163,7 @@ ul li::before{
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
-    background-image: url(/TODO_LIST_JS/images/unchecked.png);
+    background-image: url(/images/unchecked.png);
     background-size: cover;
     background-position: center;
     top: 50%;
@@ -178,7 +178,7 @@ ul li.checked{
 }
 
 ul li.checked::before{
-    background-image: url(/TODO_LIST_JS/images/checked.png);
+    background-image: url(/images/checked.png);
 }
 
 ul li span:hover{
