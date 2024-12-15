@@ -5,3 +5,5 @@ describe('Sample Test', function() {
         expect(true).to.be.true;
     });
 });
+
+const { expect } = require('chai');
