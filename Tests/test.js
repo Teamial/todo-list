@@ -7,4 +7,3 @@ describe('Sample Test', function() {
 });
 
 const { expect } = require('chai');
-jj
