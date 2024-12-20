@@ -159,32 +159,40 @@ async function setReminder(index) {
     const now = new Date();
     const minDateTime = now.toISOString().slice(0, 16);
     
-    const { value: reminderDate } = await swal({
+    const inputValue = await swal({
         title: "Set Reminder",
-        html: `
-            <input type="datetime-local" 
-                   id="reminder-datetime" 
-                   class="swal-content__input" 
-                   min="${minDateTime}"
-                   value="${minDateTime}">
-        `,
-        focusConfirm: false,
-        preConfirm: () => {
-            const datetime = document.getElementById('reminder-datetime').value;
-            if (!datetime) {
-                swal.showValidationMessage('Please select a date and time');
-                return false;
+        text: "When would you like to be reminded?",
+        content: {
+            element: "input",
+            attributes: {
+                type: "datetime-local",
+                min: minDateTime,
+                value: minDateTime,
+            },
+        },
+        buttons: {
+            cancel: true,
+            confirm: {
+                text: "Set Reminder",
+                value: true,
+                visible: true,
+                className: "",
+                closeModal: true
             }
-            return datetime;
-        }
+        },
     });
 
-    if (reminderDate) {
-        tasks[index].reminder = reminderDate;
-        saveTasks(tasks);
-        renderTasks();
-        scheduleReminder(task.text, reminderDate);
-        swal("Success!", "Reminder set successfully!", "success");
+    if (inputValue) {
+        const reminderDate = document.querySelector('input[type="datetime-local"]').value;
+        if (reminderDate) {
+            tasks[index].reminder = reminderDate;
+            saveTasks(tasks);
+            renderTasks();
+            scheduleReminder(task.text, reminderDate);
+            swal("Success!", "Reminder set successfully!", "success");
+        } else {
+            swal("Error", "Please select a valid date and time", "error");
+        }
     }
 }
 
@@ -196,13 +204,27 @@ function scheduleReminder(taskText, reminderDate) {
 
     if (timeUntilReminder > 0) {
         setTimeout(() => {
+            // Always show SweetAlert first
+            swal({
+                title: "Task Reminder!",
+                text: `Time to do task: ${taskText}`,
+                icon: "info",
+                buttons: ["Dismiss", "Snooze"],
+            }).then((willSnooze) => {
+                if (willSnooze) {
+                    // If user clicks snooze, set a new reminder for 5 minutes later
+                    const snoozeTime = new Date(Date.now() + 5 * 60000).toISOString();
+                    scheduleReminder(taskText, snoozeTime);
+                }
+            });
+
+            // Also trigger a browser notification if permitted
             if ("Notification" in window && Notification.permission === "granted") {
                 new Notification("Task Reminder", {
                     body: `Don't forget: ${taskText}`,
-                    icon: "/images/Bunny Background Remover.png"
+                    icon: "/images/Bunny Background Remover.png",
+                    requireInteraction: true
                 });
-            } else {
-                swal("Reminder", `Time to do task: ${taskText}`, "info");
             }
         }, timeUntilReminder);
     }
@@ -247,16 +269,6 @@ function formatReminder(reminderDate) {
     });
 }
 
-// Request notification permission on page load
-document.addEventListener("DOMContentLoaded", () => {
-    checkAuth();
-    renderTasks();
-    
-    if ("Notification" in window) {
-        Notification.requestPermission();
-    }
-});
-
 // Event listener for clicks within the list container
 listContainer.addEventListener("click", function(e) {
     const tasks = loadTasks();
@@ -293,3 +305,13 @@ listContainer.addEventListener("click", function(e) {
         }
     }
 }, false);
+
+// Request notification permission on page load
+document.addEventListener("DOMContentLoaded", () => {
+    checkAuth();
+    renderTasks();
+    
+    if ("Notification" in window) {
+        Notification.requestPermission();
+    }
+});
