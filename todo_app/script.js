@@ -315,3 +315,4 @@ document.addEventListener("DOMContentLoaded", () => {
         Notification.requestPermission();
     }
 });
+
