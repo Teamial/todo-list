@@ -47,21 +47,24 @@ function getTasksKey() {
 }
 
 // Function to add a new task
-function addTask(){
+function addTask() {
     const taskText = inputBox.value.trim();
-    if (taskText === ''){
-        alert("You must write something!");
+    if (taskText === '') {
+        swal("Oops!", "You must write something!", "warning");
+        return;
     }
-    else{
-        const task = {
-            text: taskText,
-            completed: false
-        };
-        const tasks = loadTasks();
-        tasks.push(task);
-        saveTasks(tasks);
-        renderTasks();
-    }
+
+    const task = {
+        text: taskText,
+        completed: false,
+        reminder: null,
+        created: new Date().toISOString()
+    };
+
+    const tasks = loadTasks();
+    tasks.push(task);
+    saveTasks(tasks);
+    renderTasks();
     inputBox.value = "";
 }
 
@@ -88,46 +91,171 @@ function saveTasks(tasks){
 }
 
 function renderTasks() {
-    listContainer.innerHTML = ""; // Clear the current list
+    listContainer.innerHTML = "";
     const tasks = loadTasks();
 
     tasks.forEach((task, index) => {
-        // Create list item container
         const li = document.createElement("li");
-
-        // Create outer div to hold the taskText and checkbox
-        const contentDiv = document.createElement("div");
-        contentDiv.style.display = "flex";
-        contentDiv.style.alignItems = "center";
-        contentDiv.style.flexGrow = "1";
-
-        // Create task text span
-        const taskText = document.createElement("span");
-        taskText.classList.add("task-text");
-        taskText.textContent = task.text;
-        contentDiv.appendChild(taskText);
-
-        // Add contentDiv to li
-        li.appendChild(contentDiv);
+        li.innerHTML = `
+            <div class="task-content ${task.completed ? 'checked' : ''}">
+                <span class="task-text">${task.text}</span>
+                ${task.reminder ? `<span class="reminder-badge">⏰ ${formatReminder(task.reminder)}</span>` : ''}
+            </div>
+            <div class="task-actions">
+                <button onclick="editTask(${index})" class="edit-button" title="Edit task">✎</button>
+                <button onclick="setReminder(${index})" class="reminder-button" title="Set reminder">⏰</button>
+                <button onclick="deleteTask(${index})" class="delete-button" title="Delete task">×</button>
+            </div>
+        `;
 
         if (task.completed) {
             li.classList.add("checked");
         }
 
-        // Create delete button
-        const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "×";
-        deleteBtn.classList.add("delete-button");
-        deleteBtn.dataset.index = index;
-        deleteBtn.style.textDecoration = "none";
+        // Toggle completion on task content click
+        const taskContent = li.querySelector('.task-content');
+        taskContent.addEventListener('click', () => toggleTask(index));
 
-        // Add delete button to li
-        li.appendChild(deleteBtn);
-        
-        // Add completed li to container
         listContainer.appendChild(li);
     });
 }
+// Function to edit task
+async function editTask(index) {
+    const tasks = loadTasks();
+    const task = tasks[index];
+
+    const result = await swal({
+        title: "Edit Task",
+        content: {
+            element: "input",
+            attributes: {
+                placeholder: "Edit your task",
+                type: "text",
+                value: task.text
+            }
+        },
+        buttons: {
+            cancel: true,
+            confirm: true,
+        },
+    });
+
+    if (result) {
+        const newText = result.trim();
+        if (newText) {
+            tasks[index].text = newText;
+            saveTasks(tasks);
+            renderTasks();
+            swal("Success!", "Task updated successfully!", "success");
+        }
+    }
+}
+// Function to set reminder
+async function setReminder(index) {
+    const tasks = loadTasks();
+    const task = tasks[index];
+    
+    // Create a date input that's at least current time
+    const now = new Date();
+    const minDateTime = now.toISOString().slice(0, 16);
+    
+    const { value: reminderDate } = await swal({
+        title: "Set Reminder",
+        html: `
+            <input type="datetime-local" 
+                   id="reminder-datetime" 
+                   class="swal-content__input" 
+                   min="${minDateTime}"
+                   value="${minDateTime}">
+        `,
+        focusConfirm: false,
+        preConfirm: () => {
+            const datetime = document.getElementById('reminder-datetime').value;
+            if (!datetime) {
+                swal.showValidationMessage('Please select a date and time');
+                return false;
+            }
+            return datetime;
+        }
+    });
+
+    if (reminderDate) {
+        tasks[index].reminder = reminderDate;
+        saveTasks(tasks);
+        renderTasks();
+        scheduleReminder(task.text, reminderDate);
+        swal("Success!", "Reminder set successfully!", "success");
+    }
+}
+
+// Function to schedule reminder notification
+function scheduleReminder(taskText, reminderDate) {
+    const reminderTime = new Date(reminderDate).getTime();
+    const now = new Date().getTime();
+    const timeUntilReminder = reminderTime - now;
+
+    if (timeUntilReminder > 0) {
+        setTimeout(() => {
+            if ("Notification" in window && Notification.permission === "granted") {
+                new Notification("Task Reminder", {
+                    body: `Don't forget: ${taskText}`,
+                    icon: "/images/Bunny Background Remover.png"
+                });
+            } else {
+                swal("Reminder", `Time to do task: ${taskText}`, "info");
+            }
+        }, timeUntilReminder);
+    }
+}
+
+// Function to toggle task completion
+function toggleTask(index) {
+    const tasks = loadTasks();
+    tasks[index].completed = !tasks[index].completed;
+    saveTasks(tasks);
+    renderTasks();
+}
+
+// Function to delete task
+function deleteTask(index) {
+    swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this task!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    }).then((willDelete) => {
+        if (willDelete) {
+            const tasks = loadTasks();
+            tasks.splice(index, 1);
+            saveTasks(tasks);
+            renderTasks();
+            swal("Success!", "Task deleted successfully!", "success");
+        }
+    });
+}
+
+// Helper function to format reminder date
+function formatReminder(reminderDate) {
+    const date = new Date(reminderDate);
+    return date.toLocaleString(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+// Request notification permission on page load
+document.addEventListener("DOMContentLoaded", () => {
+    checkAuth();
+    renderTasks();
+    
+    if ("Notification" in window) {
+        Notification.requestPermission();
+    }
+});
 
 // Event listener for clicks within the list container
 listContainer.addEventListener("click", function(e) {

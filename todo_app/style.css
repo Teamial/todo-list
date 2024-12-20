@@ -207,15 +207,18 @@ ul li.checked .task-text {
     text-decoration: line-through;
     text-decoration-thickness: 2.5px;
 }
-.delete-button {
+ul li .delete-button {
     text-decoration: none !important;
-    padding: 8px 12px;
+    padding: 8px 12px; /*Reducedpadding*/
+    min-width: 64px; /*Setminimumwidth*/
+    height: 30px; /*Setfixedheight*/
+    line-height: 1; /*Adjustlineheight*/
+    font-size: 16px;/*Adjustfontsize*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-left: 10px;
     color: #fff;
-}
-.task-text {
-    flex-grow: 1;
-    margin-right: 5px;
 }
 
 ul li.checked::before{
@@ -224,4 +227,52 @@ ul li.checked::before{
 
 ul li span:hover{
     background: #edeef0;
+}
+
+/* Task Layout */
+ul li .task-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 8px 0;
+}
+
+ul li .task-content:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 39, 101, 0.1);
+}
+
+ul li .task-text {
+    flex-grow: 1;
+    margin-right: 10px;
+    word-break: break-word;
+    transition: color 0.3s ease;
+}
+
+ul li .task-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-left: auto;
+}
+
+/* Buttons */
+ul li .edit-button,
+ul li .reminder-button {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: white;
+    padding: 0;
 }
