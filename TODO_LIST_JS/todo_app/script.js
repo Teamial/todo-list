@@ -92,20 +92,39 @@ function renderTasks() {
     const tasks = loadTasks();
 
     tasks.forEach((task, index) => {
+        // Create list item container
         const li = document.createElement("li");
-        li.textContent = task.text;
+
+        // Create outer div to hold the taskText and checkbox
+        const contentDiv = document.createElement("div");
+        contentDiv.style.display = "flex";
+        contentDiv.style.alignItems = "center";
+        contentDiv.style.flexGrow = "1";
+
+        // Create task text span
+        const taskText = document.createElement("span");
+        taskText.classList.add("task-text");
+        taskText.textContent = task.text;
+        contentDiv.appendChild(taskText);
+
+        // Add contentDiv to li
+        li.appendChild(contentDiv);
 
         if (task.completed) {
             li.classList.add("checked");
         }
 
-        // Add delete button
+        // Create delete button
         const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "\u00d7"; // Unicode for ×
+        deleteBtn.textContent = "×";
         deleteBtn.classList.add("delete-button");
-        deleteBtn.dataset.index = index; // Properly set data-index
+        deleteBtn.dataset.index = index;
+        deleteBtn.style.textDecoration = "none";
 
+        // Add delete button to li
         li.appendChild(deleteBtn);
+        
+        // Add completed li to container
         listContainer.appendChild(li);
     });
 }

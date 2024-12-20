@@ -165,6 +165,8 @@ ul {
     padding: 0;
 }
 ul li{
+    margin-left: 10px;
+    text-decoration: none !important;
     position: relative;
     list-style: none;
     font-size: 16px;
@@ -210,6 +212,10 @@ ul li.checked .task-text {
     padding: 8px 12px;
     margin-left: 10px;
     color: #fff;
+}
+.task-text {
+    flex-grow: 1;
+    margin-right: 5px;
 }
 
 ul li.checked::before{
